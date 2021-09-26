@@ -63,16 +63,19 @@ Plug 'stsewd/fzf-checkout.vim'
 Plug 'vuciv/vim-bujo'
 Plug 'tpope/vim-dispatch'
 Plug 'theprimeagen/vim-be-good'
-Plug 'gruvbox-community/gruvbox'
 Plug 'tpope/vim-projectionist'
 Plug 'preservim/nerdtree'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-surround'
 Plug 'posva/vim-vue'
 Plug 'digitaltoad/vim-pug'
+Plug 'airblade/vim-gitgutter'
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+Plug 'sansyrox/vim-python-virtualenv'
 
 " colorschemes
 
+Plug 'gruvbox-community/gruvbox'
 Plug 'tyru/caw.vim'
 Plug 'colepeters/spacemacs-theme.vim'
 Plug 'sainnhe/gruvbox-material'
@@ -88,7 +91,7 @@ call plug#end()
 let g:theprimeagen_colorscheme = "gruvbox"
 fun! ColorMyPencils()
     colorscheme ayu
-    set background=dark
+    " set background=dark
 
     let g:gruvbox_contrast_dark = 'hard'
     if exists('+termguicolors')
@@ -97,7 +100,7 @@ fun! ColorMyPencils()
     endif
     let g:gruvbox_invert_selection='0'
 
-    highlight ColorColumn ctermbg=0 guibg=grey
+    " highlight ColorColumn ctermbg=0 guibg=grey
     " highlight LineNr guifg=#ff8659
     " highlight LineNr guifg=#aed75f
     highlight LineNr guifg=#5eacd3
@@ -152,8 +155,8 @@ endfun
 " Debugger remaps
 nnoremap <leader>m :MaximizerToggle!<CR>
 nnoremap <leader>F :Files<CR>
-nnoremap <leader>fa :Ag<CR>
 nnoremap <leader>fh :History<CR>
+nnoremap <leader>fa :Ag<CR>
 nnoremap <leader>fc :Colors<CR>
 nnoremap <leader>dd :call vimspector#Launch()<CR>
 nnoremap <leader>dc :call GotoWindow(g:vimspector_session_windows.code)<CR>
@@ -196,11 +199,9 @@ nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
 nnoremap <Leader>rp :resize 100<CR>
-nnoremap <Leader>ee oif err != nil {<CR>log.Fatalf("%+v\n", err)<CR>}<CR><esc>kkI<esc>
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 
 " Use <c-space> to trigger completion.
 if has('nvim')
@@ -210,7 +211,7 @@ else
 endif
 
 " greatest remap ever
-vnoremap <leader>p "_dP
+noremap <leader>p "_dP
 
 " next greatest remap ever : asbjornHaland
 nnoremap <leader>y "+y
@@ -227,7 +228,7 @@ nmap <leader>w :w!<cr>
 
 " escapes
 inoremap jj <Esc>
-set timeoutlen=1000
+" set timeoutlen=1000
 inoremap <C-c> <esc>
 
 " Useful mappings for managing tabs
@@ -345,3 +346,29 @@ function! s:check_back_space() abort
 endfunction
 
 let g:coc_snippet_next = '<tab>'
+
+hi Normal guibg=NONE ctermbg=NONE
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => git gutter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:gitgutter_enabled=1
+" nnoremap <silent> <leader>d :GitGutterToggle<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => JEDI
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" vls
+let g:LanguageClient_serverCommands = {
+    \ 'vue': ['vls']
+    \ }
+
